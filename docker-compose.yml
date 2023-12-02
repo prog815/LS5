@@ -2,40 +2,43 @@ version: '3'
 
 services:
   elasticsearch:
-    image: elasticsearch:7.17.15
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
     container_name: elasticsearch
-    restart: always
-    volumes:
-      - elastic_data:/usr/share/elasticsearch/data/
     environment:
-      discovery.type: single-node
-      bootstrap.memory_lock: true
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+      - discovery.type=single-node
+      - ELASTIC_USERNAME=admin
+      - ELASTIC_PASSWORD=admin
     ports:
       - 9200:9200
       - 9300:9300
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - ./docs:/usr/share/elasticsearch/docs
     networks:
-      - elk
+      - elastic
 
   kibana:
-    image: kibana:7.17.15
+    image: docker.elastic.co/kibana/kibana:8.11.1
     container_name: kibana
-    restart: always
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
       - 5601:5601
-    depends_on:
-      - elasticsearch
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     networks:
-      - elk
+      - elastic
+
+  fscrawler:
+    image: dadoonet/fscrawler:2.9-ocr-es7
+    container_name: fscrawler
+    volumes:
+      - ./docs:/usr/share/fscrawler/data
+      - ./fscrawler_config:/usr/share/fscrawler/config
+    command: ["fscrawler", "--config_dir", "/usr/share/fscrawler/config", "--loop", "1"]
 
 volumes:
-  elastic_data: {}
+  esdata:
+    driver: local
 
 networks:
-  elk:
+  elastic:
+    driver: bridge

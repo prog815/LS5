@@ -1,0 +1,67 @@
+name: "my_index"
+fs:
+  url: "/usr/share/fscrawler/data"
+  update_rate: "15m"
+  excludes:
+    - "*.jpg"
+    - "*.jpeg"
+    - "*.png"
+    - "*.gif"
+    - "*.bmp"
+    - "*.tiff"
+    - "*.tif"
+    - "*.zip"
+    - "*.gz"
+    - "*.tgz"
+    - "*.bz2"
+    - "*.rar"
+    - "*.7z"
+  json_support: false
+  filename_as_id: false
+  add_filesize: true
+  remove_deleted: true
+  add_as_inner_object: false
+  store_source: false
+  index_content: true
+  attributes_support: false
+  raw_metadata: false
+  xml_support: false
+  index_folders: true
+  lang_detect: true
+  continue_on_error: false
+  ocr:
+    language: "eng"
+    enabled: false
+  follow_symlinks: false
+  index_accesslog: false
+  index_url: false
+  index_attachments: false
+  attributes:
+    - "owner"
+    - "group"
+    - "posix:permissions"
+    - "dos:hidden"
+    - "dos:system"
+    - "dos:readonly"
+  ignore_above: 256000000
+  index_names: false
+  index_full_name: false
+  use_last_modified: false
+  strip_prefix: ""
+  index_folder_size: false
+  ignore_dot_files: true
+  index_files_without_extension: false
+  remove_deleted_different_sha1: false
+  index_files_as_attachment: false
+  index_file_names: true
+  add_filesize_in_name: false
+  indexed_chars: -1
+  attributes_lowercase: false
+  index_file_date: false
+  index_file_content_type: false
+  index_file_owner: false
+  index_file_group: false
+  index_file_permissions: false
+  index_file_posix_permissions: false
+  index_file_dos_hidden: false
+  index_file_dos_system: false
