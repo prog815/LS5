@@ -1,26 +1,27 @@
-version: '3'
+version: '3.8'
 
 services:
   elasticsearch:
-    image: elasticsearch:8.11.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
     container_name: elasticsearch
-    restart: always
-    volumes:
-      - esdata:/usr/share/elasticsearch/data/
     environment:
       - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
       - xpack.security.enabled=false
-      - ELASTIC_PASSWORD="123456"
+      - xpack.security.enrollment.enabled=true
+      - ELASTIC_PASSWORD=123456
+      - bootstrap.memory_lock=true
     ulimits:
       memlock:
         soft: -1
         hard: -1
+    volumes:
+      - data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
-    networks:
-      - elastic
+    restart: unless-stopped
+
 
   kibana:
     image: kibana:8.11.1
@@ -33,21 +34,26 @@ services:
       - 5601:5601
     depends_on:
       - elasticsearch
-    networks:
-      - elastic
+
 
   fscrawler:
-    image: dadoonet/fscrawler:2.9-ocr-es7
+    image: dadoonet/fscrawler
     container_name: fscrawler
+    depends_on:
+      - elasticsearch
     volumes:
-      - ./docs:/usr/share/fscrawler/data
-      - ./fscrawler_config:/usr/share/fscrawler/config
-    command: ["fscrawler", "--config_dir", "/usr/share/fscrawler/config", "--loop", "1"]
-
-volumes:
-  esdata:
-    driver: local
+      - ./.fscrawler:/root/.fscrawler
+      - logs:/usr/share/fscrawler/logs
+      - ./data:/tmp/es:ro
+    command: ["fscrawler", "documents_job"]
+    restart: unless-stopped
 
 networks:
-  elastic:
+  es_fscrawler_network:
     driver: bridge
+
+volumes:
+  data:
+    driver: local
+  logs:
+    driver: local
