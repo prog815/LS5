@@ -32,3 +32,5 @@ elasticsearch:
   ssl_verification: true
   username: "elastic"
   password: "123456"
+  index: "documents_job"
+  json_settings_file: "./my_custom_settings.json"

@@ -1,0 +1,15 @@
+{
+    "mappings": {
+      "_doc": {
+        "properties": {
+          "content": {
+            "type": "text"
+          },
+          "file.filename": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+  
