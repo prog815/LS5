@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Привет, мир!</title>
+</head>
+<body>
+    <h1>Привет, мир!</h1>
+    <p>Это главная страница вашего Flask-приложения.</p>
+    <form action="{{ url_for('index') }}" method="post">
+        <input type="text" name="query" placeholder="Введите поисковый запрос">
+        <button type="submit">Поиск</button>
+    </form>
+</body>
+</html>
