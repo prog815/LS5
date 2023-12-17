@@ -2,17 +2,18 @@
 version: '2.2'
 services:
   elasticsearch:
-    image: elasticsearch:7.14.1
+    image: elasticsearch:${ELASTIC_VERSION}
     container_name: elasticsearch
     restart: always
     environment:
       - discovery.type=single-node
-      - ELASTIC_PASSWORD=changeme
+      - xpack.security.http.ssl.enabled=false
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ports:
       - 9200:9200
-      
+
   kibana:
-    image: kibana:7.14.1
+    image: kibana:${ELASTIC_VERSION}
     container_name: kibana
     depends_on:
       - elasticsearch
@@ -22,5 +23,15 @@ services:
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=changeme
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
 
+  # fscrawler:
+  #   image: dadoonet/fscrawler:${FSCRAWLER_VERSION}
+  #   container_name: fscrawler
+  #   restart: always
+  #   volumes:
+  #     - ./data:/tmp/es:ro
+  #     - ./config:/root/.fscrawler
+  #   depends_on:
+  #     - elasticsearch
+  #   command: fscrawler idx --restart
