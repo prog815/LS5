@@ -1,3 +1,5 @@
 logs
 data/*
 plan.txt
+./.fscrawler/documents_job/_status.json
+./.fscrawler/_default/*

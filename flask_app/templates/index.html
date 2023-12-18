@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Привет, мир!</title>
+</head>
+<body>
+    <h1>Поисковик!</h1>
+    
+    <p>Ищем здесь</p>
+    <form action="{{ url_for('index') }}" method="post">
+        <input type="text" name="query" placeholder="Введите поисковый запрос" value="{{ query }}">
+        <button type="submit">Поиск</button>
+    </form>
+
+    <p>Здесь результаты:</p>
+    {% for result in results %}
+        <div>
+            <h2>{{ result._source.file.url[15:] }}</h2>
+            {% for cont in result.highlight.content %}
+                <p>- {{ cont|replace('<em>','<')|replace('</em>','>') }}</p>
+            {% endfor %}
+            
+        </div>
+    {% endfor %}
+
+
+</body>
+</html>
