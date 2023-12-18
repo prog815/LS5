@@ -7,22 +7,30 @@ logger = logging.getLogger(__name__)
 
 def search_in_elasticsearch(query):
     # Создайте подключение к Elasticsearch
-    es = Elasticsearch(['elasticsearch'])
+    es = Elasticsearch(['elasticsearch:9200'],
+                       http_auth=('elastic', 'abc123456'))
 
     # Определите запрос для Elasticsearch
     body = {
+        "_source": [],
+        "size": 10,
         "query": {
-            "match": {
-                "content": query
+            "multi_match" : {
+            "query" : query,
+            "fields" : ["content"]
             }
         },
-        "sort": [
-            {"_score": {"order": "desc"}}
-        ]
+        "highlight": {
+            "fields": {
+            "content": {}
+            }
+        }
     }
-
+    
     # Выполните поиск в Elasticsearch
+    logger.info(body)
     results = es.search(index="idx", body=body)
+    # logger.info(results)
 
     # Верните результаты
     return results['hits']['hits']
@@ -38,7 +46,8 @@ def index():
         query = request.form.get('query')
         logger.info("search")
         results = search_in_elasticsearch(query)
-        return render_template('results.html', results=results)
+        logger.info(len(results))
+        return render_template('index.html', results=results, query=query)
     return render_template('index.html')
 
 
