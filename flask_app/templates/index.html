@@ -3,15 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Поиск в локальной сети</title>
+
+    <style>
+        /* Стили для поля ввода */
+        input[type=text] {
+          width: 100%;
+          padding: 12px 20px;
+          margin: 8px 0;
+          box-sizing: border-box;
+          border: 2px solid #ccc;
+          border-radius: 4px;
+        }
+  
+        /* Стили для кнопки поиска */
+        input[type=submit] {
+          width: 100%;
+          background-color: #4CAF50;
+          color: white;
+          padding: 14px 20px;
+          margin: 8px 0;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+  
+        /* Стили для контейнера */
+        .container {
+          border-radius: 5px;
+          background-color: #f2f2f2;
+          padding: 20px;
+        }
+    </style>
+
 </head>
 <body>
-    <h1>Поисковик!</h1>
+    <h2>Поиск</h2>
     
-    <p>Ищем здесь</p>
-    <form action="{{ url_for('index') }}" method="post">
-        <input type="text" name="query" placeholder="Введите поисковый запрос" value="{{ query }}">
-        <button type="submit">Поиск</button>
-    </form>
+    <div class="container">
+        
+        <form action="{{ url_for('index') }}" method="post">
+            <input type="text" class="search-input" name="query" placeholder="Введите поисковый запрос" value="{{ query }}">
+            <button class="search-button" type="submit">Поиск</button>
+        </form>
+        
+
+    </div>
 
     <p>Здесь результаты:</p>
     {% for result in results %}
