@@ -43,5 +43,6 @@ services:
       - 8000:8000
     volumes:
       - ./flask_app:/app
+      - ./data:/app/static/files:ro
     depends_on:
       - elasticsearch
