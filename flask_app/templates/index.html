@@ -33,12 +33,17 @@
           background-color: #f2f2f2;
           padding: 20px;
         }
+
+        .highlight {
+            background-color: yellow;
+            font-style: italic;
+        }
     </style>
 
 </head>
 <body>
     <h2>Поиск</h2>
-    
+
     <div class="container">
         
         <form action="{{ url_for('index') }}" method="post">
@@ -54,7 +59,8 @@
         <div>
             <h2><a href={{ url_for('static', filename='files/' + result._source.file.url[15:]) }} target=_blank download>{{ result._source.file.url[15:] }}</a></h2>
             {% for cont in result.highlight.content %}
-                <p>- {{ cont|replace('<em>','<')|replace('</em>','>') }}</p>
+                {% set new_cont = cont | replace('<em>', '<span class="highlight">') | replace('</em>', '</span>') %}
+                <p>- {{ new_cont | safe }}</p>
             {% endfor %}
             
         </div>
