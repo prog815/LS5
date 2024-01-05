@@ -1,5 +1,5 @@
 logs
 data/*
 plan.txt
-./config/idx/_status.json
-./config/_default/*
+config/_default/*
+config/idx/_status.json

@@ -16,7 +16,7 @@
     <p>Здесь результаты:</p>
     {% for result in results %}
         <div>
-            <h2>{{ result._source.file.url[15:] }}</h2>
+            <h2><a href={{ url_for('static', filename='files/' + result._source.file.url[15:]) }} target=_blank download>{{ result._source.file.url[15:] }}</a></h2>
             {% for cont in result.highlight.content %}
                 <p>- {{ cont|replace('<em>','<')|replace('</em>','>') }}</p>
             {% endfor %}
