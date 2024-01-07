@@ -54,14 +54,15 @@
 
     </div>
 
-    <p>Здесь результаты:</p>
     {% for result in results %}
         <div>
             <h2><a href={{ url_for('static', filename='files/' + result._source.file.url[15:]) }} target=_blank download>{{ result._source.file.url[15:] }}</a></h2>
-            {% for cont in result.highlight.content %}
-                {% set new_cont = cont | replace('<em>', '<span class="highlight">') | replace('</em>', '</span>') %}
-                <p>- {{ new_cont | safe }}</p>
-            {% endfor %}
+            <p>
+                {% for cont in result.highlight.content %}
+                    {% set new_cont = cont | replace('<em>', '<span class="highlight">') | replace('</em>', '</span>') %}
+                    {{ new_cont | safe }} ... 
+                {% endfor %}
+            </p>
             
         </div>
     {% endfor %}
